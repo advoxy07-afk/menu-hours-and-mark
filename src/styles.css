@@ -122,7 +122,7 @@
 @layer base {
   html { scroll-behavior: smooth; }
   body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
-  ::selection { background: var(--lime); color: var(--forest); }
+  ::selection { background: var(--terracotta); color: var(--cream); }
 }
 
 @utility font-editorial {
