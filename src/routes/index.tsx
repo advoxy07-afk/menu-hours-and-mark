@@ -47,7 +47,7 @@ function Index() {
         <Nav />
         <div className="relative z-10 flex flex-col justify-end px-5 pb-10 pt-28 md:px-10 md:pb-14">
           <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-lime">Nalco Nagar · Angul · Odisha</p>
-          <h1 className="display-tight text-[clamp(5.5rem,19vw,15rem)]">
+          <h1 className="display-tight text-[clamp(5rem,min(19vw,19vh),12rem)]">
             Eat<br />like you<br /><span className="text-lime">mean it.</span>
           </h1>
           <p className="mt-6 max-w-sm text-base text-cream/80">
@@ -59,7 +59,7 @@ function Index() {
           </div>
         </div>
         <div className="relative flex flex-col md:min-h-0">
-          <div className="relative h-[46svh] md:h-auto md:flex-1">
+          <div className="relative h-[38svh] md:h-auto md:flex-1">
             <img src={hero} alt="Oats bowl with banana and dry fruits beside a green shake" width={1200} height={1504} className="absolute inset-0 h-full w-full object-cover object-[50%_30%]" />
           </div>
           <div className="border-t-4 border-lime bg-forest px-5 py-6 md:px-8">
@@ -67,7 +67,7 @@ function Index() {
               <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-lime">On the menu</p>
               <p className="font-editorial text-sm text-cream/70">starting prices</p>
             </div>
-            <ul className="mt-3 grid grid-cols-2 gap-x-6">
+            <ul className="mt-3 grid gap-x-6 sm:grid-cols-2">
               {highlights.map(([label, id]) => (
                 <li key={id} className="flex items-baseline justify-between gap-2 border-b border-cream/15 py-2">
                   <span className="display-tight text-2xl md:text-3xl">{label}</span>
