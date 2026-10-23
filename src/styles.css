@@ -95,15 +95,15 @@
   --secondary: var(--sage);
   --secondary-foreground: var(--ink);
   --muted: var(--sage);
-  --muted-foreground: oklch(0.45 0.03 150);
-  --accent: var(--lime);
-  --accent-foreground: var(--forest);
+  --muted-foreground: oklch(0.53 0.015 145);
+  --accent: var(--terracotta);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: var(--cream);
-  --border: oklch(0.82 0.03 130);
-  --input: oklch(0.82 0.03 130);
-  --ring: var(--leaf);
-  --chart-1: var(--leaf); --chart-2: var(--lime); --chart-3: var(--forest); --chart-4: var(--sage); --chart-5: var(--ink);
+  --border: var(--divider);
+  --input: var(--divider);
+  --ring: var(--terracotta);
+  --chart-1: var(--leaf); --chart-2: var(--terracotta); --chart-3: var(--forest); --chart-4: var(--sage-mid); --chart-5: var(--ink);
   --sidebar: var(--cream); --sidebar-foreground: var(--ink); --sidebar-primary: var(--forest); --sidebar-primary-foreground: var(--cream);
   --sidebar-accent: var(--sage); --sidebar-accent-foreground: var(--ink); --sidebar-border: var(--border); --sidebar-ring: var(--leaf);
 }
@@ -133,17 +133,10 @@
 
 @utility display-tight {
   font-family: var(--font-display);
-  line-height: 0.82;
-  letter-spacing: -0.01em;
+  line-height: 1.05;
+  letter-spacing: 0;
 }
-
-@utility marquee {
-  animation: marquee 40s linear infinite;
-}
-
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee { animation: none; }
   html { scroll-behavior: auto; }
 }
