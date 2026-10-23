@@ -14,7 +14,7 @@ export const WINDOWS: Window[] = [
 
 export function openStateAt(minutes: number): { open: boolean; next: string | null } {
   if (WINDOWS.some((w) => minutes >= w.start && minutes < w.end)) return { open: true, next: null };
-  const upcoming = WINDOWS.find((w) => minutes < w.start) ?? WINDOWS[0];
+  const upcoming = WINDOWS.find((w) => minutes < w.start) ?? WINDOWS[0]!;
   return { open: false, next: upcoming.label };
 }
 
