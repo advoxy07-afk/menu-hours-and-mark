@@ -7,7 +7,7 @@
  *   confirmed to open the exact café listing — open it on a phone before publishing.
  * - When a verified direct reviews URL or Business Profile URL exists, set
  *   googleReviewsUrl / googleBusinessProfileUrl below; components pick it up.
- * - No map embed: it would need a Google API key. External links are used instead.
+ * - Map embed is a keyless address search embed (mapEmbedUrl); swap for a place embed once verified.
  */
 export const business = {
   name: "Healthy Diet Cafe",
@@ -26,6 +26,11 @@ export const business = {
     { label: "Evening", value: "4:30 – 10:00 pm" },
   ],
 } as const;
+
+/** Keyless Google Maps search embed built from the supplied address (no place ID/coordinates assumed). */
+export const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
+  "Healthy Diet Cafe, Calcutta Sweets Complex, Nalco Nagar, Angul, Odisha, India",
+)}&z=16&output=embed`;
 
 export const mapsLink = business.googleMapsUrl;
 export const directionsLink = business.googleDirectionsUrl ?? business.googleMapsUrl;

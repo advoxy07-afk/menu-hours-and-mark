@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import hero from "@/assets/hero-bowl.jpg";
 import { MenuBoard } from "@/components/MenuBoard";
 import { menuItems, formatPrice, type CategoryId } from "@/data/menu";
-import { business, mapsLink, directionsLink, reviewsLink, telLink, external } from "@/config/business";
+import { business, mapsLink, mapEmbedUrl, directionsLink, reviewsLink, telLink, external } from "@/config/business";
 import { InstagramIcon } from "@/components/InstagramIcon";
 
 export const Route = createFileRoute("/")({
@@ -180,6 +180,23 @@ function Index() {
               <InstagramIcon /> Follow us on Instagram
             </a>
           </div>
+        </div>
+        <div className="mt-14 overflow-hidden rounded-2xl border-2 border-lime bg-botanical">
+          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+            <p className="display-tight text-3xl">{business.name} <span className="font-editorial text-base normal-case text-cream/70">· Nalco Nagar, Angul</span></p>
+            <div className="flex flex-wrap gap-3">
+              <a href={directionsLink} {...external} className="bg-lime px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-forest">Get directions ↗</a>
+              <a href={reviewsLink} {...external} className="border border-cream/40 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] hover:border-lime hover:text-lime">Read Google reviews ↗</a>
+            </div>
+          </div>
+          <iframe
+            src={mapEmbedUrl}
+            title="Map showing Healthy Diet Cafe, Calcutta Sweets Complex, Nalco Nagar, Angul, Odisha"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            className="block h-[360px] w-full border-0 md:h-[480px]"
+          />
         </div>
       </section>
 
