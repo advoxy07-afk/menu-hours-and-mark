@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import hero from "@/assets/hero-bowl.jpg";
 import { MenuBoard } from "@/components/MenuBoard";
-import { menuItems, formatPrice } from "@/data/menu";
+import { menuItems, formatPrice, type CategoryId } from "@/data/menu";
+import { business, mapsLink, directionsLink, reviewsLink, telLink, external } from "@/config/business";
+import { InstagramIcon } from "@/components/InstagramIcon";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,8 +19,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE = "7077514143";
-const MAPS = "https://www.google.com/maps/search/?api=1&query=Healthy+Diet+Cafe+Calcutta+Sweets+Complex+Nalco+Nagar+Angul+Odisha";
+const fromPrice = (c: CategoryId) => Math.min(...menuItems.filter((i) => i.category === c).map((i) => i.price));
+const highlights: [string, CategoryId][] = [["Protein Shakes", "protein-shakes"], ["Healthy Meals", "meals"], ["Dosas", "dosas"], ["Healthy Snacks", "snacks"]];
 
 const pick = (n: string) => menuItems.find((i) => i.name === n)!;
 const favourites = ["High Protein (Mix)", "Oats Muesli Mix (Special)", "Grilled Chicken Bowl", "Ragi Dosa", "Green Detox Shake"].map(pick);
@@ -30,7 +32,8 @@ function Nav() {
       <div className="flex items-center gap-5 text-xs font-bold uppercase tracking-[0.18em]">
         <a href="#menu" className="hover:text-lime">Menu</a>
         <a href="#visit" className="hidden hover:text-lime sm:inline">Visit</a>
-        <a href={`tel:${PHONE}`} className="bg-lime px-3 py-2 text-forest">Call</a>
+        <a href={business.instagramUrl} {...external} aria-label="Follow us on Instagram" className="hover:text-lime focus-visible:text-lime"><InstagramIcon /></a>
+        <a href={telLink} className="bg-lime px-3 py-2 text-forest">Call</a>
       </div>
     </nav>
   );
@@ -44,7 +47,7 @@ function Index() {
         <Nav />
         <div className="relative z-10 flex flex-col justify-end px-5 pb-10 pt-28 md:px-10 md:pb-14">
           <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-lime">Nalco Nagar · Angul · Odisha</p>
-          <h1 className="display-tight text-[clamp(5.5rem,19vw,15rem)]">
+          <h1 className="display-tight text-[clamp(5rem,min(19vw,19vh),12rem)]">
             Eat<br />like you<br /><span className="text-lime">mean it.</span>
           </h1>
           <p className="mt-6 max-w-sm text-base text-cream/80">
@@ -52,14 +55,27 @@ function Index() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#menu" className="bg-lime px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-forest transition-transform hover:-translate-y-0.5">Explore the menu ↗</a>
-            <a href="#visit" className="border border-cream/40 px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] hover:border-lime hover:text-lime">Find us</a>
+            <a href={directionsLink} {...external} className="border border-cream/40 px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] hover:border-lime hover:text-lime">Find us</a>
           </div>
         </div>
-        <div className="relative h-[60svh] md:h-auto">
-          <img src={hero} alt="Oats bowl with banana and dry fruits beside a green shake" width={1200} height={1504} className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute bottom-6 left-0 bg-lime px-4 py-3 text-forest md:-left-8">
-            <span className="block text-[10px] font-bold uppercase tracking-[0.25em]">Shakes from</span>
-            <span className="display-tight text-5xl">₹45</span>
+        <div className="relative flex flex-col md:min-h-0">
+          <div className="relative h-[38svh] md:h-auto md:flex-1">
+            <img src={hero} alt="Oats bowl with banana and dry fruits beside a green shake" width={1200} height={1504} className="absolute inset-0 h-full w-full object-cover object-[50%_30%]" />
+          </div>
+          <div className="border-t-4 border-lime bg-forest px-5 py-6 md:px-8">
+            <div className="flex items-baseline justify-between">
+              <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-lime">On the menu</p>
+              <p className="font-editorial text-sm text-cream/70">starting prices</p>
+            </div>
+            <ul className="mt-3 grid gap-x-6 sm:grid-cols-2">
+              {highlights.map(([label, id]) => (
+                <li key={id} className="flex items-baseline justify-between gap-2 border-b border-cream/15 py-2">
+                  <span className="display-tight text-2xl md:text-3xl">{label}</span>
+                  <span className="font-display text-2xl text-lime md:text-3xl"><span className="font-editorial text-xs text-cream/60">from </span>{formatPrice(fromPrice(id))}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="#menu" className="mt-4 inline-block text-xs font-bold uppercase tracking-[0.2em] text-lime hover:underline">Explore the full menu →</a>
           </div>
         </div>
       </section>
@@ -126,11 +142,14 @@ function Index() {
         <MenuBoard />
       </section>
 
-      {/* 05 — Reviews fallback */}
+      {/* 05 — Reviews (redirect to Google Maps, nothing embedded) */}
       <section className="bg-lime px-5 py-20 text-forest md:px-10">
         <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
-          <p className="display-tight text-[clamp(3rem,8vw,6.5rem)]">Been here?<br /><span className="font-editorial text-[0.6em] normal-case">Tell Angul what you ordered.</span></p>
-          <a href={MAPS} target="_blank" rel="noreferrer" className="justify-self-start bg-forest px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-lime">Reviews on Google ↗</a>
+          <div>
+            <p className="display-tight text-[clamp(3rem,8vw,6.5rem)]">Good food.<br />Real people.</p>
+            <p className="mt-3 font-editorial text-lg">See customer reviews on Google Maps.</p>
+          </div>
+          <a href={reviewsLink} {...external} className="justify-self-start bg-forest px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-lime transition-transform hover:-translate-y-0.5">Read our Google Reviews ↗</a>
         </div>
       </section>
 
@@ -140,19 +159,26 @@ function Index() {
         <div className="mt-14 grid gap-10 border-t border-cream/20 pt-10 md:grid-cols-3">
           <div>
             <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-lime">Find us</h3>
-            <p className="mt-3 text-lg">Calcutta Sweets Complex,<br />Nalco Nagar, Angul,<br />Odisha, India</p>
-            <a href={MAPS} target="_blank" rel="noreferrer" className="mt-4 inline-block border-b border-lime text-sm text-lime">Open in Maps ↗</a>
+            <address className="mt-3 text-lg not-italic">{business.addressLines.map((l) => <span key={l} className="block">{l}</span>)}</address>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a href={directionsLink} {...external} className="bg-lime px-5 py-3 text-xs font-bold uppercase tracking-[0.18em] text-forest transition-transform hover:-translate-y-0.5">Get directions ↗</a>
+              <a href={mapsLink} {...external} className="border border-cream/40 px-5 py-3 text-xs font-bold uppercase tracking-[0.18em] hover:border-lime hover:text-lime">View on Google Maps</a>
+            </div>
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-lime">Open daily</h3>
             <dl className="mt-3 space-y-2 text-lg">
-              <div className="flex justify-between gap-6 border-b border-cream/15 pb-2"><dt className="font-editorial">Morning</dt><dd className="tabular-nums">6:30 – 11:30 am</dd></div>
-              <div className="flex justify-between gap-6 border-b border-cream/15 pb-2"><dt className="font-editorial">Evening</dt><dd className="tabular-nums">4:30 – 10:00 pm</dd></div>
+              {business.hours.map((h) => (
+                <div key={h.label} className="flex justify-between gap-6 border-b border-cream/15 pb-2"><dt className="font-editorial">{h.label}</dt><dd className="tabular-nums">{h.value}</dd></div>
+              ))}
             </dl>
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-lime">Call</h3>
-            <a href={`tel:${PHONE}`} className="display-tight mt-3 block text-6xl hover:text-lime">70775 14143</a>
+            <a href={telLink} className="display-tight mt-3 block text-6xl hover:text-lime">{business.phoneDisplay}</a>
+            <a href={business.instagramUrl} {...external} className="mt-6 inline-flex items-center gap-2 border-b border-lime pb-1 text-sm text-lime hover:text-cream">
+              <InstagramIcon /> Follow us on Instagram
+            </a>
           </div>
         </div>
       </section>
@@ -160,7 +186,10 @@ function Index() {
       <footer className="bg-ink px-5 py-10 text-cream/60 md:px-10">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <p className="display-tight text-[clamp(3.5rem,12vw,10rem)] text-cream">Healthy Diet <span className="text-lime">Cafe</span></p>
+          <div className="flex flex-col gap-3 md:items-end">
+          <a href={business.instagramUrl} {...external} className="inline-flex items-center gap-2 text-sm text-lime hover:text-cream"><InstagramIcon /> {business.instagramHandle}</a>
           <p className="text-xs uppercase tracking-[0.2em]">Nalco Nagar, Angul · © {new Date().getFullYear()}</p>
+          </div>
         </div>
       </footer>
     </main>
