@@ -9,6 +9,9 @@ import { menuItems, formatPrice, type CategoryId } from "@/data/menu";
 import { business, mapEmbedUrl, directionsLink, reviewsLink, telLink, external } from "@/config/business";
 import { InstagramIcon } from "@/components/InstagramIcon";
 import { openStateAt, kolkataMinutesNow } from "@/lib/hours";
+import { CartProvider } from "@/components/CartProvider";
+import { AddToCart, CartButton, MobileCartBar } from "@/components/CartControls";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const SITE = "https://menu-hours-and-mark.lovable.app";
 
@@ -29,7 +32,11 @@ export const Route = createFileRoute("/")({
 });
 
 const fromPrice = (c: CategoryId) => Math.min(...menuItems.filter((i) => i.category === c).map((i) => i.price));
-const pick = (n: string) => menuItems.find((i) => i.name === n)!;
+const pick = (n: string) => {
+  const item = menuItems.find((i) => i.name === n);
+  if (!item) throw new Error(`Missing featured menu item: ${n}`);
+  return item;
+};
 
 const trustStrip: [string, CategoryId][] = [
   ["Protein shakes", "protein-shakes"],
@@ -104,6 +111,8 @@ function Nav() {
             Call us
           </a>
         </div>
+        <div className="flex items-center gap-1">
+        <CartButton />
         <button
           className={`flex h-11 w-11 items-center justify-center rounded-md text-forest md:hidden ${focusRing}`}
           aria-expanded={open}
@@ -115,6 +124,7 @@ function Nav() {
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
           </svg>
         </button>
+        </div>
       </nav>
       {open && (
         <div id="mobile-nav" className="border-t border-divider bg-cream md:hidden">
@@ -227,9 +237,10 @@ function Signature() {
               </div>
               <ul className="mt-3">
                 {f.items.map(pick).map((i) => (
-                  <li key={i.id} className="flex items-baseline justify-between gap-3 border-b border-dotted border-ink/15 py-2 text-[15px]">
-                    <span className="text-ink">{i.name}</span>
-                    <span className="font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span>
+                  <li key={i.id} className="border-b border-dotted border-ink/15 py-2 text-[15px]">
+                    <div className="flex items-baseline justify-between gap-3"><span className="text-ink">{i.name}</span>
+                    <span className="shrink-0 font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span></div>
+                    <div className="mt-2"><AddToCart item={i} /></div>
                   </li>
                 ))}
               </ul>
@@ -242,9 +253,10 @@ function Signature() {
             </p>
             <ul className="mt-5">
               {snackItems.map((i) => (
-                <li key={i.id} className="flex items-baseline justify-between gap-3 border-b border-dotted border-ink/15 py-2 text-[15px]">
-                  <span className="text-ink">{i.name}</span>
-                  <span className="font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span>
+                <li key={i.id} className="border-b border-dotted border-ink/15 py-2 text-[15px]">
+                  <div className="flex items-baseline justify-between gap-3"><span className="text-ink">{i.name}</span>
+                  <span className="shrink-0 font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span></div>
+                  <div className="mt-2"><AddToCart item={i} /></div>
                 </li>
               ))}
             </ul>
@@ -427,7 +439,8 @@ function Footer() {
 
 function Index() {
   return (
-    <main className="overflow-x-clip">
+    <CartProvider>
+    <main className="overflow-x-clip pb-20 md:pb-0">
       <Nav />
       <Hero />
       <TrustStrip />
@@ -450,5 +463,8 @@ function Index() {
       <Instagram />
       <Footer />
     </main>
+    <CartDrawer />
+    <MobileCartBar />
+    </CartProvider>
   );
 }

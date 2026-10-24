@@ -13,6 +13,7 @@ export const business = {
   name: "Healthy Diet Cafe",
   addressLines: ["Calcutta Sweets Complex,", "Nalco Nagar, Angul,", "Odisha, India"],
   phone: "7077514143",
+  whatsappNumber: "917077514143",
   phoneDisplay: "70775 14143",
   instagramUrl: "https://www.instagram.com/healthydietcafe2026?vrfl=MXYwcTFseGZ5ZG9wZg==",
   instagramHandle: "@healthydietcafe2026",
