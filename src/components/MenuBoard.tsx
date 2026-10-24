@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { categories, filterMenu, formatPrice, visibleCategories, type CategoryId } from "@/data/menu";
+import { AddToCart } from "@/components/CartControls";
 
 export function MenuBoard() {
   const [query, setQuery] = useState("");
@@ -71,10 +72,13 @@ export function MenuBoard() {
                 </header>
                 <ul>
                   {g.items.map((i) => (
-                    <li key={i.id} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-3 border-b border-dotted border-ink/15 py-2.5">
-                      <span className="text-[15px] font-medium text-ink">{i.name}</span>
-                      <span aria-hidden className="translate-y-[-3px] border-b border-dotted border-ink/25" />
-                      <span className="text-lg font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span>
+                    <li key={i.id} className="border-b border-dotted border-ink/15 py-3">
+                      <div className="flex items-baseline gap-3">
+                        <span className="min-w-0 text-[15px] font-medium text-ink">{i.name}</span>
+                        <span aria-hidden className="min-w-2 flex-1 translate-y-[-3px] border-b border-dotted border-ink/25" />
+                        <span className="shrink-0 text-lg font-semibold tabular-nums text-forest">{formatPrice(i.price)}</span>
+                      </div>
+                      <div className="mt-2"><AddToCart item={i} /></div>
                     </li>
                   ))}
                 </ul>
